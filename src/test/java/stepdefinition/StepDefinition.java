@@ -338,7 +338,11 @@ public class StepDefinition {
 
     @Then("Validate the name text and price on the both windows are same")
     public void validateTheNameTextAndPriceOnTheBothWindowsAreSame() {
+try{
 
+}catch (Exception ex){
+
+}
     }
 
     @And("Validate a click on ADD TO BAG, it should ask for size")
