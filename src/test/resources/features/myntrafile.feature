@@ -34,9 +34,8 @@ Feature: Testing myntra website
   Scenario: Test Add to Bag functionality
     Given Click on image and validate if it opens in new window
     Then Validate the URL and text on the window
-    Then Validate the name text and price on the both windows are same
     And Validate a click on ADD TO BAG, it should ask for size
-    Then Select the size and click on ADD TO BAG and validate item added to bag
+    Then Select the size "XS" and click on ADD TO BAG and validate item added to bag
 
 
 

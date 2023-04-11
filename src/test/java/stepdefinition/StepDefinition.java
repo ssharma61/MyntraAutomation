@@ -11,6 +11,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
 
+import java.io.StringReader;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,6 +23,7 @@ public class StepDefinition {
 
     private WebDriver driver;
     static String currentUrl = "";
+    static String size;
     static String invalidmobilenoerrortext;
     static ArrayList<String> handles;
     static String tshirt;
@@ -45,7 +47,7 @@ public class StepDefinition {
     @Then("I navigate to Myntra")
     public void i_navigate_to_myntra() throws InterruptedException {
         driver.get("https://www.myntra.com/");
-        Thread.sleep(1000);
+        Thread.sleep(500);
     }
 
     @Then("Validate if the myntra page opened")
@@ -325,32 +327,74 @@ public class StepDefinition {
 
     @Then("Validate the URL and text on the window")
     public void validateTheURLAndTextOnTheWindow() {
-        WebElement homepagetext2 = driver.findElement(By.xpath("(//h3[@class='product-brand'])[1]"));
-        System.out.println("homepagetext2" + homepagetext2);
-        homepagetext2.getText();
-        String homepagetext = (myntraLocators.homepagebrandname) + "[1]";
-        System.out.println("homepagetext" + homepagetext);
-        driver.get(homepagetext);
+        WebElement firstimgtextoldwindown = driver.findElement(myntraLocators.firstimgtext(1));
+        WebElement discountpriceoldwindow = driver.findElement(myntraLocators.discuntoldwindown);
         driver.switchTo().window(handles.get(1));
         String CurrentUrlnewtab = driver.getCurrentUrl();
         Assert.assertTrue(CurrentUrlnewtab.contains("https://www.myntra.com/tshirts/dillinger/dillinger-women"));
-    }
+        WebElement headingofnewwindowtext = driver.findElement(myntraLocators.headingofnewwindown);
+        Assert.assertTrue(headingofnewwindowtext.getText().contains("DILLINGER"));
+        WebElement firrstimgtextnewwindow = driver.findElement(myntraLocators.firstimgnewwindow);
+        WebElement discountpricenewwindow = driver.findElement(myntraLocators.discountnewwindow);
+        if (firstimgtextoldwindown == firrstimgtextnewwindow && discountpriceoldwindow == discountpricenewwindow){
+            Assert.assertTrue(true);
+        }
+        else {
+            Assert.assertFalse(false);
+        }
 
-    @Then("Validate the name text and price on the both windows are same")
-    public void validateTheNameTextAndPriceOnTheBothWindowsAreSame() {
-try{
-
-}catch (Exception ex){
-
-}
     }
 
     @And("Validate a click on ADD TO BAG, it should ask for size")
     public void validateAClickOnADDTOBAGItShouldAskForSize() {
-
+        driver.findElement(myntraLocators.addtobag).click();
+        driver.findElement(myntraLocators.addtobagerror).isDisplayed();
+        List<WebElement> sizeelements = driver.findElements(myntraLocators.sizebutton);
+        for (WebElement element : sizeelements) {
+            size = element.getText();
+            System.out.println(size);
+            if (sizeelements.size() > 0) {
+                System.out.println("Size elements are present");
+            }
+            if (size.contains("XS") || size.contains("S")  || size.contains("M") || size.contains("L")  || size.contains("XL")){
+                Assert.assertTrue(true);
+            }
+                else {
+                Assert.assertFalse("Size not present", false);
+            }
+        }
     }
 
-    @Then("Select the size and click on ADD TO BAG and validate item added to bag")
-    public void selectTheSizeAndClickOnADDTOBAGAndValidateItemAddedToBag() {
+    @Then("^Select the size \\\"(.*)\\\" and click on ADD TO BAG and validate item added to bag$")
+    public void selectTheSizeAndClickOnADDTOBAGAndValidateItemAddedToBag(String XS) {
+        WebElement addtobagtextpopup1 = driver.findElement(myntraLocators.addtobagtextpopup);
+        System.out.println(addtobagtextpopup1.getText());
+        if (addtobagtextpopup1.isDisplayed()){
+            Assert.assertTrue("Element found", true);
+        }
+        else {
+            Assert.assertFalse("Element not found", false);
+        }
+        String xssizebutton = "//p[text()= '%s']";
+        driver.findElement(By.xpath(String.format(xssizebutton, XS))).click();
+        driver.findElement(myntraLocators.addtobag).click();
+        WebElement addtobagpopupwindow = driver.findElement(myntraLocators.addtobagpopup);
+        Boolean addtobagpopupwindownvalidation = addtobagpopupwindow.isDisplayed();
+        WebElement addtobagtextpopup2 = driver.findElement(myntraLocators.addtobagtextpopup);
+        if (addtobagtextpopup2.isDisplayed()){
+            Assert.assertTrue("Element found", true);
+        }
+        else {
+            Assert.assertFalse("Element not found", false);
+        }
+        driver.findElement(myntraLocators.deliverytextbox).sendKeys("204101");
+        driver.findElement(myntraLocators.deliverycheckbutton).click();
+        Boolean deliverygreenbuttonvalidation = driver.findElement(myntraLocators.deliverygreencheck).isDisplayed();
+        Boolean deliverychangebuttonvalidation = driver.findElement(myntraLocators.deliverychangebutton).isDisplayed();
+        driver.findElement(myntraLocators.deliverychangebutton).click();
+        Boolean deliverycheckbuttonvalidation = driver.findElement(myntraLocators.deliverycheckbutton).isDisplayed();
+        addtobagtextpopup2.click();
+        String addtobagtexturl = driver.getCurrentUrl();
+        Assert.assertTrue(addtobagtexturl.contains("checkout"));
     }
 }

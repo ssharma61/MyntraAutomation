@@ -45,8 +45,28 @@ public class myntraLocators {
     public static By activepage = By.xpath("//li[@class='pagination-active']");
     public static By nextbutton = By.xpath("//li[@class='pagination-next']");
     public static By previousbutton = By.xpath("//li[@class='pagination-prev']");
-//    static String firstimg = homepageimg + "[1]";
+    //    static String firstimg = homepageimg + "[1]";
     public static By firstimgclick = By.xpath("//li[@class='product-base'][1]");
+
+    public static By firstimgtext(int i) {
+        return By.xpath("(//h3[@class='product-brand'])" + "[" + i + "]");
+    }
+
+    public static By firstimgnewwindow = By.xpath("//h1[@class='pdp-title']");
+    public static By discuntoldwindown = By.xpath("(//span[@class='product-discountedPrice'])[1]");
+    public static By discountnewwindow = By.xpath("//span[@class='pdp-discount']");
+    public static By headingofnewwindown = By.xpath("//div[@class='breadcrumbs-container']");
+    public static By addtobag = By.xpath("//span[@class='myntraweb-sprite pdp-whiteBag sprites-whiteBag pdp-flex pdp-center']");
+    public static By addtobagerror = By.xpath("//span[@class='size-buttons-size-error-message']");
+    public static By sizebutton = By.xpath("//button[@class='size-buttons-size-button size-buttons-size-button-default']");
+    public static By addtobagpopup = By.xpath("//p[@class='notify-thumbnail-text']");
+    public static By addtobagtextpopup = By.xpath("//span[contains(@class,'desktop-badge')]");
+    public static By deliverytextbox = By.xpath("//input[@class='pincode-code']");
+    public static By deliverycheckbutton = By.xpath("//div[@class='pincode-deliveryContainer']//input[@type='submit']");
+    public static By deliverygreencheck = By.xpath("//div[@class='pincode-tick sprites-lightTick']");
+    public static By deliverychangebutton = By.xpath("//button[@class='pincode-check-another-pincode pincode-button']");
+
+
 }
 
 
