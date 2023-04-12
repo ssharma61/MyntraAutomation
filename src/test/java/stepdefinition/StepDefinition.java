@@ -425,6 +425,6 @@ public class StepDefinition {
         driver.findElement(myntraLocators.wishlistscreenloginbutton).click();
         String loginurl = driver.getCurrentUrl();
         Assert.assertTrue(loginurl.contains("https://www.myntra.com/login?referer=https://www.myntra.com/wishlist"));
-        driver.close();
+        driver.quit();
     }
 }
