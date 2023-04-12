@@ -47,7 +47,6 @@ public class myntraLocators {
     public static By previousbutton = By.xpath("//li[@class='pagination-prev']");
     //    static String firstimg = homepageimg + "[1]";
     public static By firstimgclick = By.xpath("//li[@class='product-base'][1]");
-
     public static By firstimgtext(int i) {
         return By.xpath("(//h3[@class='product-brand'])" + "[" + i + "]");
     }
@@ -60,13 +59,23 @@ public class myntraLocators {
     public static By addtobagerror = By.xpath("//span[@class='size-buttons-size-error-message']");
     public static By sizebutton = By.xpath("//button[@class='size-buttons-size-button size-buttons-size-button-default']");
     public static By addtobagpopup = By.xpath("//p[@class='notify-thumbnail-text']");
+    public static By gotobag = By.xpath("//a[@class='pdp-goToCart pdp-add-to-bag pdp-button pdp-flex pdp-center ']");
+    public static By bagicon = By.xpath("//span[@class='myntraweb-sprite desktop-iconBag sprites-headerBag']");
     public static By addtobagtextpopup = By.xpath("//span[contains(@class,'desktop-badge')]");
     public static By deliverytextbox = By.xpath("//input[@class='pincode-code']");
     public static By deliverycheckbutton = By.xpath("//div[@class='pincode-deliveryContainer']//input[@type='submit']");
     public static By deliverygreencheck = By.xpath("//div[@class='pincode-tick sprites-lightTick']");
     public static By deliverychangebutton = By.xpath("//button[@class='pincode-check-another-pincode pincode-button']");
-
-
+    public static By secureelement = By.xpath("//div[@class='secure']");
+    public static By placeorderbutton = By.xpath("//button[@class='css-etguer']");
+    public static By removebutton1 = By.xpath("//button[contains(@class,'Remove')]");
+    public static By removebutton2 = By.xpath("//button[@class='inlinebuttonV2-base-actionButton ']");
+    public static By removebuttonocnfirmationpage = By.xpath("//div[@class='modal-base-modal bulkActionStrip-confirmationModalDesktop']");
+    public static By movetowishlistbutton = By.xpath("//button[contains(@class,'Wishlist')]");
+    public static By addeditemconfirmation = By.xpath("//div[@class='itemContainer-base-item ']");
+    public static By checkoutfullpage = By.xpath("//div[@class='itemComponents-base-invisibleBackDrop']");
+    public static By additemfromwishlist = By.xpath("//div[@class='button-base-button emptyCart-base-wishlistButton ']");
+    public static By wishlistscreenloginbutton = By.xpath("//a[@class='wishlistLogin-button']");
 }
 
 

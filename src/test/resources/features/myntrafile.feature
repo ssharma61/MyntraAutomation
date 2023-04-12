@@ -35,7 +35,9 @@ Feature: Testing myntra website
     Given Click on image and validate if it opens in new window
     Then Validate the URL and text on the window
     And Validate a click on ADD TO BAG, it should ask for size
-    Then Select the size "XS" and click on ADD TO BAG and validate item added to bag
+    Then Select the size "M" and click on ADD TO BAG and validate item added to bag
+    And Validate checkout page
+    Then Validate Remove and wishlist functionality
 
 
 

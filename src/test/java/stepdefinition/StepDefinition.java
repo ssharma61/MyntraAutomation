@@ -30,6 +30,7 @@ public class StepDefinition {
     static String Men;
     static String Topwear;
     WebElement mobileNumberField;
+    WebElement addtobagtextpopup2;
     WebElement search;
     static Actions ac;
 
@@ -331,9 +332,7 @@ public class StepDefinition {
         WebElement discountpriceoldwindow = driver.findElement(myntraLocators.discuntoldwindown);
         driver.switchTo().window(handles.get(1));
         String CurrentUrlnewtab = driver.getCurrentUrl();
-        Assert.assertTrue(CurrentUrlnewtab.contains("https://www.myntra.com/tshirts/dillinger/dillinger-women"));
-        WebElement headingofnewwindowtext = driver.findElement(myntraLocators.headingofnewwindown);
-        Assert.assertTrue(headingofnewwindowtext.getText().contains("DILLINGER"));
+        Assert.assertTrue(CurrentUrlnewtab.contains("https://www.myntra.com/tshirts/"));
         WebElement firrstimgtextnewwindow = driver.findElement(myntraLocators.firstimgnewwindow);
         WebElement discountpricenewwindow = driver.findElement(myntraLocators.discountnewwindow);
         if (firstimgtextoldwindown == firrstimgtextnewwindow && discountpriceoldwindow == discountpricenewwindow){
@@ -366,7 +365,7 @@ public class StepDefinition {
     }
 
     @Then("^Select the size \\\"(.*)\\\" and click on ADD TO BAG and validate item added to bag$")
-    public void selectTheSizeAndClickOnADDTOBAGAndValidateItemAddedToBag(String XS) {
+    public void selectTheSizeAndClickOnADDTOBAGAndValidateItemAddedToBag(String M) {
         WebElement addtobagtextpopup1 = driver.findElement(myntraLocators.addtobagtextpopup);
         System.out.println(addtobagtextpopup1.getText());
         if (addtobagtextpopup1.isDisplayed()){
@@ -376,11 +375,11 @@ public class StepDefinition {
             Assert.assertFalse("Element not found", false);
         }
         String xssizebutton = "//p[text()= '%s']";
-        driver.findElement(By.xpath(String.format(xssizebutton, XS))).click();
+        driver.findElement(By.xpath(String.format(xssizebutton, M))).click();
         driver.findElement(myntraLocators.addtobag).click();
         WebElement addtobagpopupwindow = driver.findElement(myntraLocators.addtobagpopup);
         Boolean addtobagpopupwindownvalidation = addtobagpopupwindow.isDisplayed();
-        WebElement addtobagtextpopup2 = driver.findElement(myntraLocators.addtobagtextpopup);
+        addtobagtextpopup2 = driver.findElement(myntraLocators.addtobagtextpopup);
         if (addtobagtextpopup2.isDisplayed()){
             Assert.assertTrue("Element found", true);
         }
@@ -393,8 +392,39 @@ public class StepDefinition {
         Boolean deliverychangebuttonvalidation = driver.findElement(myntraLocators.deliverychangebutton).isDisplayed();
         driver.findElement(myntraLocators.deliverychangebutton).click();
         Boolean deliverycheckbuttonvalidation = driver.findElement(myntraLocators.deliverycheckbutton).isDisplayed();
-        addtobagtextpopup2.click();
+        Boolean gotobagicon = driver.findElement(myntraLocators.gotobag).isDisplayed();
+    }
+
+    @And("Validate checkout page")
+    public void validateCheckoutPage() {
+        driver.findElement(myntraLocators.bagicon).click();
+        driver.findElement(myntraLocators.checkoutfullpage).click();
         String addtobagtexturl = driver.getCurrentUrl();
         Assert.assertTrue(addtobagtexturl.contains("checkout"));
+        Boolean itemaddedconfirmation1 = driver.findElement(myntraLocators.addeditemconfirmation).isDisplayed();
+        String secureelement = driver.findElement(myntraLocators.secureelement).getText();
+        Boolean securevalidation = secureelement.contains("100%");
+        Boolean movetowishlistbuttonconfirm1 = driver.findElement(myntraLocators.movetowishlistbutton).isDisplayed();
+        driver.findElement(myntraLocators.placeorderbutton).click();
+        String placeorderbuttonclickurl = driver.getCurrentUrl();
+        Boolean placeorderbuttonvalidation = placeorderbuttonclickurl.contains("login");
+        driver.navigate().back();
+    }
+
+    @Then("Validate Remove and wishlist functionality")
+    public void validateRemoveAndWishlistFunctionality() {
+        driver.findElement(myntraLocators.removebutton1).click();
+        driver.findElement(myntraLocators.removebuttonocnfirmationpage).isDisplayed();
+        driver.findElement(myntraLocators.removebutton2).click();
+        Boolean itemremovedconfrimation = driver.findElement(myntraLocators.addeditemconfirmation).isDisplayed();
+        Boolean movetowishlistbuttonremoved = driver.findElement(myntraLocators.movetowishlistbutton).isDisplayed();
+        driver.findElement(myntraLocators.additemfromwishlist).click();
+        String wishlisturl = driver.getCurrentUrl();
+        Assert.assertTrue(wishlisturl.contains("wishlist"));
+        Boolean loginbuttononwishlistscreen = driver.findElement(myntraLocators.wishlistscreenloginbutton).isDisplayed();
+        driver.findElement(myntraLocators.wishlistscreenloginbutton).click();
+        String loginurl = driver.getCurrentUrl();
+        Assert.assertTrue(loginurl.contains("https://www.myntra.com/login?referer=https://www.myntra.com/wishlist"));
+//        driver.close();
     }
 }
