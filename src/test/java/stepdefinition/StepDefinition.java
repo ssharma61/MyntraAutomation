@@ -9,9 +9,11 @@ import org.junit.Assert;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.devtools.v85.network.model.WebSocketHandshakeResponseReceived;
 import org.openqa.selenium.interactions.Actions;
 
 import java.io.StringReader;
+import java.security.Key;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,8 +27,9 @@ public class StepDefinition {
     static String currentUrl = "";
     static String size;
     static ArrayList<String> handles;
-    WebElement search;
     static Actions ac;
+    static String tempFilterTagText;
+    WebElement clearButtonDisplay;
 
     @Given("I have opened my web browser")
     public void i_have_opened_my_web_browser() {
@@ -47,10 +50,12 @@ public class StepDefinition {
     @Then("Validate if the myntra page opened")
     public void validate_if_the_myntra_page_opened() {
         WebElement profileIcon = driver.findElement(myntraLocators.profileIcon);
-        Boolean profileIconDisplay = profileIcon.isDisplayed();
-        profileIcon.click();
         WebElement myntraIcon = driver.findElement(myntraLocators.myntraIcon);
-        Boolean myntraIconDisplay = myntraIcon.isDisplayed();
+        if (!profileIcon.isDisplayed() && !myntraIcon.isDisplayed()){
+            Assert.assertFalse("Elements not found", profileIcon.isDisplayed() && myntraIcon.isDisplayed());
+        }
+        else {Assert.assertTrue("Element found", true);}
+        profileIcon.click();
     }
 
     @Given("I have clicked on Signup or login button under profile")
@@ -69,7 +74,7 @@ public class StepDefinition {
     }
 
     @And("User should not able to proceed with invalid mobile number")
-    public void userShouldNotAbleToProceedWithInvalidMobileNumber() {
+    public void userShouldNotAbleToProceedWithInvalidMobileNumber() {;
         WebElement mobileNumberField = driver.findElement(myntraLocators.mobileNumberField);
         mobileNumberField.click();
         mobileNumberField.sendKeys("123456");
@@ -84,7 +89,7 @@ public class StepDefinition {
     }
 
     @Then("User to validate the termsofuse and privacypolicy link")
-    public void userToValidateTheTermsofuseAndPrivacypolicyLink() throws InterruptedException {
+    public void userToValidateTheTermsofuseAndPrivacypolicyLink() {
         driver.findElement(myntraLocators.termsOfUse).click();
         String currentUrl2 = driver.getCurrentUrl();
         Assert.assertTrue(currentUrl2.contains("https://www.myntra.com/termsofuse"));
@@ -94,7 +99,7 @@ public class StepDefinition {
 
     @Given("Validate if desktop tag are present")
     public void validateIfDesktopTagArePresent() {
-        List<WebElement> mainPageElements1List = driver.findElements(myntraLocators.mainPageelements1);
+        List<WebElement> mainPageElements1List = driver.findElements(myntraLocators.mainPageElements1);
         boolean menFound = false;
         boolean womenFound = false;
         boolean kidsFound = false;
@@ -124,7 +129,7 @@ public class StepDefinition {
         } else {
             Assert.fail("Elements not found");
         }
-        List<WebElement> mainPageElements2List = driver.findElements(myntraLocators.mainPageelements2);
+        List<WebElement> mainPageElements2List = driver.findElements(myntraLocators.mainPageElements2);
         boolean profileFound = false;
         boolean wishListFound = false;
         boolean bagFound = false;
@@ -148,8 +153,8 @@ public class StepDefinition {
     }
 
     @Then("click on search button and validate the url")
-    public void clickOnSearchButtonAndValidateTheUrl() throws InterruptedException {
-        search = driver.findElement(myntraLocators.searchTab);
+    public void clickOnSearchButtonAndValidateTheUrl() {
+        WebElement search = driver.findElement(myntraLocators.searchTab);
         search.click();
         String tshirt = "Tshirts for women";
         search.sendKeys(tshirt, Keys.ENTER);
@@ -160,51 +165,86 @@ public class StepDefinition {
 
     @Then("All filter tag are present on url")
     public void all_filter_tag_are_present_on_url() {
-        String filtertag = driver.findElement(myntraLocators.filterTag).getText();
-        Assert.assertTrue(filtertag.contains("FILTER"));
+        String filterTag = driver.findElement(myntraLocators.filterTag).getText();
+        Assert.assertTrue(filterTag.contains("FILTER"));
         List<WebElement> filterTagElementList = driver.findElements(myntraLocators.filterTagElement);
-            Assert.assertNotNull(filterTagElementList);
+        boolean categoriesFound = false;
+        boolean brandFound = false;
+        boolean priceFound = false;
+        boolean colorFound = false;
+        boolean discountRangeFound = false;
+        for (WebElement filterElement : filterTagElementList) {
+            String filterElementText = filterElement.getText();
+            if (filterElementText.contains("CATEGORIES")) {
+                categoriesFound = true;
+            }
+            if (filterElementText.contains("BRAND")) {
+                brandFound = true;
+            }
+            if (filterElementText.contains("PRICE")) {
+                priceFound = true;
+            }
+            if (filterElementText.contains("COLOR")) {
+                colorFound = true;
+            }
+            if (filterElementText.contains("DISCOUNT RANGE")) {
+                discountRangeFound = true;
+            }
+        }
+        if (categoriesFound && brandFound && priceFound && colorFound && discountRangeFound) {
+            Assert.assertTrue("All elements found", true);
+        } else {
+            Assert.fail("Elements not found");
+        }
     }
 
     @Then("Validate data under categories")
-    public void validate_data_under_categories() throws InterruptedException {
+    public void validate_data_under_categories() {
         List<WebElement> categoriesList = driver.findElements(myntraLocators.categoryTag);
         if (categoriesList.size() > 0) {
             Assert.assertNotNull(categoriesList);
         } else {
             Assert.fail("Validation Failed");
         }
+        driver.findElement(myntraLocators.tshirtsFilter).click();
+        tempFilterTagText = driver.findElement(myntraLocators.tempFilterTag).getText();
+        if (tempFilterTagText.equals("Tshirts")){
+            Assert.assertTrue("box is checked", true);
+        }
+        clearButtonDisplay = driver.findElement(myntraLocators.clearAllButton);
+        if (clearButtonDisplay.isDisplayed()){
+            driver.findElement(myntraLocators.clearAllButton).click();
+            }
+        else {Assert.fail("clear button not displayed");}
     }
 
     @Then("Validate data under Brand")
-    public void validateDataUnderBrand() {
+    public void validateDataUnderBrand() throws InterruptedException {
         List<WebElement> brandList = driver.findElements(myntraLocators.brandTag);
-        Assert.assertNotNull(brandList);
+        Assert.assertNotNull("List is not null", brandList);
         driver.findElement(myntraLocators.brandMoreTag).click();
         driver.findElement(myntraLocators.brandMorePage).isDisplayed();
         List<WebElement> allBrandList = driver.findElements(myntraLocators.brandMorePageTag);
-        System.out.println(allBrandList.size()); //604
         if (allBrandList.size() > brandList.size()) {
             Assert.assertTrue("Validation Pass", true);
         } else {
             Assert.fail("Validation Fail");
         }
-    }
-
-    @Then("Validate data under price")
-    public void validateDataUnderPrice() {
-        List<WebElement> priceList = driver.findElements(myntraLocators.priceTag);
-        if (priceList.size() > 0) {
-            Assert.assertTrue("Validation Pass", true);
-        } else {
-            Assert.fail("Validation Fail");
+        driver.findElement(myntraLocators.brandPageCloseButton).click();
+        driver.findElement(myntraLocators.brandFabfleeFilter).click();
+        WebElement brandNameValidation = driver.findElement(myntraLocators.homePageBrandName);
+        if (brandNameValidation.getText().contains("Fabflee")){
+            Assert.assertTrue("brand name display", true);
         }
+        if (tempFilterTagText.contains("Fabflee")){
+            Assert.assertTrue("Filter applied", true);
+        }
+        driver.findElement(myntraLocators.brandFabfleeFilter).click();
     }
 
     @Then("Validate data under colour")
     public void validateDataUnderColour() {
         List<WebElement> colorList = driver.findElements(myntraLocators.colorTag);
-        System.out.println(colorList.size()); //7
         if (colorList.size() > 0) {
             Assert.assertTrue("Validation Pass", true);
         } else {
@@ -212,27 +252,53 @@ public class StepDefinition {
         }
         driver.findElement(myntraLocators.colorMoreTag).click();
         List<WebElement> allColorList = driver.findElements(myntraLocators.colorTag);
-        System.out.println(allColorList.size()); //44
         if (allColorList.size() > colorList.size()) {
             Assert.assertTrue("Validation Pass", true);
         } else {
             Assert.fail("Validation Fail");
         }
+        driver.findElement(myntraLocators.colorFilter).click();
+        String tempColorTagText = driver.findElement(myntraLocators.tempFilterTag).getText();
+        if (tempColorTagText.contains("Black")){
+            Assert.assertTrue("box is checked", true);
+        }
+        driver.findElement(myntraLocators.clearAllButton).click();
     }
 
-    @And("Validate data under discount range")
-    public void validateDataUnderDiscountRange() {
+    @And("Validate data under discount range and price")
+    public void validateDataUnderDiscountRangeAndPrice() throws InterruptedException {
         List<WebElement> discountRangeList = driver.findElements(myntraLocators.discountRangeTag);
         if (discountRangeList.size() > 0) {
             Assert.assertTrue("Validation Pass", true);
         } else {
             Assert.fail("Validation Fail");
         }
+        ac = new Actions(driver);
+        ac.sendKeys(Keys.PAGE_DOWN).build().perform();
+        Thread.sleep(1000);
+        driver.findElement(myntraLocators.discountFilter).click();
+        Thread.sleep(1000);
+        String tempDiscountTagText = driver.findElement(myntraLocators.tempFilterTag).getText();
+        if (tempDiscountTagText.contains("10%")){
+            Assert.assertTrue("box is checked", true);
+        }
+        driver.findElement(myntraLocators.clearAllButton).click();
+        List<WebElement> priceList = driver.findElements(myntraLocators.priceTag);
+        if (priceList.size() > 0) {
+            Assert.assertTrue("Validation Pass", true);
+        } else {
+            Assert.fail("Validation Fail");
+        }
+        driver.findElement(myntraLocators.priceFilter).click();
+        String tempPriceTagText = driver.findElement(myntraLocators.tempFilterTag).getText();
+        if (tempDiscountTagText.contains("Rs.")){
+            Assert.assertTrue("box is checked", true);
+        }
+        driver.findElement(myntraLocators.clearAllButton).click();
     }
 
     @Then("validate the navigated page elements")
-    public void validate_The_NavigatedPageElements() throws InterruptedException {
-        Boolean sortButtonValidation = driver.findElement(By.xpath("//div[@class='sort-sortBy']")).isDisplayed();
+    public void validate_The_NavigatedPageElements() {
         List<WebElement> sortTabList = driver.findElements(By.xpath("//label[@class='sort-label ']"));
         if (sortTabList.size() > 0) {
             Assert.assertTrue("Validation Pass", true);

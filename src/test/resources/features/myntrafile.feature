@@ -19,9 +19,8 @@ Feature: Testing myntra website
     Then All filter tag are present on url
     Then Validate data under categories
     Then Validate data under Brand
-    Then Validate data under price
     Then Validate data under colour
-    And Validate data under discount range
+    And Validate data under discount range and price
     Then validate the navigated page elements
 # status till 04-07-2023
   Scenario: Check Men clothing button and validate the functionalities
@@ -38,6 +37,7 @@ Feature: Testing myntra website
     Then Select the size "M" and click on ADD TO BAG and validate item added to bag
     And Validate checkout page
     Then Validate Remove and wishlist functionality
+
 
 
 

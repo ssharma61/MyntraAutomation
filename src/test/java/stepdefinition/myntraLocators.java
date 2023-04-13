@@ -11,13 +11,18 @@ public class myntraLocators {
     public static By continueButton = By.xpath("//div[@class='submitBottomOption']");
     public static By invalidMobileNoError = By.xpath("//div[@class='errorContainer']");
     public static By termsOfUse = By.xpath("//a[normalize-space()='Terms of Use']");
+    public static By tshirtsFilter = By.xpath("(//div[@class='common-checkboxIndicator'])[1]");
+    public static By clearAllButton = By.xpath("//span[@class='header-clearAllBtn']");
+    public static By tempFilterTag = By.xpath("//div[@class='filter-summary-filter']");
+    public static By priceFilter = By.xpath("(//label[@class='common-customCheckbox vertical-filters-label'])[3]");
+    public static By discountFilter = By.xpath("(//label[@class='common-customRadio vertical-filters-label'])[1]");
+    public static By colorFilter = By.xpath("(//div[@class='common-checkboxIndicator'])[15]");
+    public static By brandFabfleeFilter = By.xpath("(//div[@class='common-checkboxIndicator'])[3]");
 
     public static By mobileNumberField = By.xpath("//input[@class='form-control mobileNumberInput']");
 
-    //    public static By loginValidation = By.xpath("\"//div[@class='desktop-infoEmail']\"");
-    public static By men = By.xpath("//a[@class='desktop-main'][normalize-space()='Men']");
-    public static By mainPageelements1 = By.xpath("//a[@class='desktop-main']");
-    public static By mainPageelements2 = By.xpath("//span[@class='desktop-userTitle']");
+    public static By mainPageElements1 = By.xpath("//a[@class='desktop-main']");
+    public static By mainPageElements2 = By.xpath("//span[@class='desktop-userTitle']");
     public static By searchTab = By.xpath("//input[@class='desktop-searchBar']");
     public static By sortByDropdown = By.xpath("//span[@class='myntraweb-sprite sort-downArrow sprites-downArrow']");
     public static By filterTag = By.xpath("//span[@class='header-title']");
