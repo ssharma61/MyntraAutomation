@@ -57,7 +57,7 @@ public class myntraLocators {
     }
 
     public static By firstImgNewWindow = By.xpath("//h1[@class='pdp-title']");
-    public static By discountOldWindow = By.xpath("(//span[@class='product-discountedPrice'])[1]");
+    public static By discountOldWindow = By.xpath("(//span[@class='product-discountPercentage'])[1]");
     public static By discountNewWindow = By.xpath("//span[@class='pdp-discount']");
     public static By headingOfNewWindow = By.xpath("//div[@class='breadcrumbs-container']");
     public static By addToBag = By.xpath("//span[@class='myntraweb-sprite pdp-whiteBag sprites-whiteBag pdp-flex pdp-center']");

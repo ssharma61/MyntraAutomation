@@ -282,6 +282,7 @@ public class StepDefinition {
         if (tempDiscountTagText.contains("10%")){
             Assert.assertTrue("box is checked", true);
         }
+        Thread.sleep(1000);
         driver.findElement(myntraLocators.clearAllButton).click();
         List<WebElement> priceList = driver.findElements(myntraLocators.priceTag);
         if (priceList.size() > 0) {
@@ -393,6 +394,7 @@ public class StepDefinition {
         driver.findElement(myntraLocators.lastValueOfPageCount).click();
         Thread.sleep(30000);
         driver.findElement(myntraLocators.previousButton).isDisplayed();
+        driver.quit();
     }
 
     @Given("Click on image and validate if it opens in new window")
@@ -411,14 +413,18 @@ public class StepDefinition {
 
     @Then("Validate the URL and text on the window")
     public void validateTheURLAndTextOnTheWindow() {
-        WebElement firstImgTextOldWindow = driver.findElement(myntraLocators.firstImgText(1));
+        WebElement firstImgOldWindow = driver.findElement(myntraLocators.firstImgText(1));
+        String firstImgOldWindowText = firstImgOldWindow.getText();
         WebElement discountPriceOldWindow = driver.findElement(myntraLocators.discountOldWindow);
+        String discountPriceOldWindowText = discountPriceOldWindow.getText();
         driver.switchTo().window(handles.get(1));
         String currentUrlNewTab = driver.getCurrentUrl();
         Assert.assertTrue(currentUrlNewTab.contains("https://www.myntra.com/tshirts/"));
-        WebElement firstImgTextNewWindow = driver.findElement(myntraLocators.firstImgNewWindow);
+        WebElement firstImgNewWindow = driver.findElement(myntraLocators.firstImgNewWindow);
+        String firstImgNewWindowText = firstImgNewWindow.getText();
         WebElement discountPriceNewWindow = driver.findElement(myntraLocators.discountNewWindow);
-        if (firstImgTextOldWindow == firstImgTextNewWindow && discountPriceOldWindow == discountPriceNewWindow){
+        String discountPriceNewWindowText = discountPriceNewWindow.getText();
+        if (firstImgOldWindowText.equals(firstImgNewWindowText) && discountPriceOldWindowText.equals(discountPriceNewWindowText)){
             Assert.assertTrue("Validation Pass", true);
         } else {
             Assert.fail("Validation Fail");
