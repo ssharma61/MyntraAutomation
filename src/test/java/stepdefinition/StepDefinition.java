@@ -59,7 +59,7 @@ public class StepDefinition {
     }
 
     @Given("I have clicked on Signup or login button under profile")
-    public void iHaveClickedOnSignupOrLoginButtonUnderProfile() throws InterruptedException {
+    public void iHaveClickedOnSignupOrLoginButtonUnderProfile() {
         currentUrl = driver.getCurrentUrl();
         Assert.assertTrue(currentUrl.contains("https://www.myntra.com/"));
         ac = new Actions(driver);
@@ -219,7 +219,7 @@ public class StepDefinition {
     }
 
     @Then("Validate data under Brand")
-    public void validateDataUnderBrand() throws InterruptedException {
+    public void validateDataUnderBrand() {
         List<WebElement> brandList = driver.findElements(myntraLocators.brandTag);
         Assert.assertNotNull("List is not null", brandList);
         driver.findElement(myntraLocators.brandMoreTag).click();
