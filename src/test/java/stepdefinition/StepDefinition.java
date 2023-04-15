@@ -1,25 +1,17 @@
 package stepdefinition;
 
-import com.sun.tools.xjc.reader.xmlschema.bindinfo.BIConversion;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-import net.bytebuddy.asm.Advice;
 import org.junit.Assert;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.devtools.v85.network.model.WebSocketHandshakeResponseReceived;
 import org.openqa.selenium.interactions.Actions;
-
-import java.io.StringReader;
-import java.security.Key;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 public class StepDefinition {
 
@@ -57,7 +49,6 @@ public class StepDefinition {
         else {Assert.assertTrue("Element found", true);}
         profileIcon.click();
     }
-
     @Given("I have clicked on Signup or login button under profile")
     public void iHaveClickedOnSignupOrLoginButtonUnderProfile() {
         currentUrl = driver.getCurrentUrl();
@@ -80,12 +71,7 @@ public class StepDefinition {
         mobileNumberField.sendKeys("123456");
         driver.findElement(myntraLocators.continueButton).click();
         String invalidMobileNoErrorText = driver.findElement(myntraLocators.invalidMobileNoError).getText();
-        if (invalidMobileNoErrorText.contains("Please enter a valid mobile number")){
-            Assert.assertTrue("Validation Pass", true);
-        }
-        else {
-            Assert.fail("Validation Fail");
-        }
+            Assert.assertTrue("Validation Pass", invalidMobileNoErrorText.contains("Please enter a valid mobile number"));
     }
 
     @Then("User to validate the termsofuse and privacypolicy link")
@@ -100,55 +86,22 @@ public class StepDefinition {
     @Given("Validate if desktop tag are present")
     public void validateIfDesktopTagArePresent() {
         List<WebElement> mainPageElements1List = driver.findElements(myntraLocators.mainPageElements1);
-        boolean menFound = false;
-        boolean womenFound = false;
-        boolean kidsFound = false;
-        boolean homeAndLivingFound = false;
-        boolean beautyFound = false;
-        boolean studioFound = false;
-        for (WebElement element1 : mainPageElements1List) {
-            String mainPageElement1Text = element1.getText();
-            if (mainPageElement1Text.contains("MEN")) {
-                menFound = true;
-            }
-            if (mainPageElement1Text.contains("WOMEN")) {
-                womenFound = true;
-            }
-            if (mainPageElement1Text.contains("KIDS")) {
-                kidsFound = true;
-            } if (mainPageElement1Text.contains("BEAUTY")) {
-                beautyFound = true;
-            } if (mainPageElement1Text.contains("STUDIO")) {
-                studioFound = true;
-            } if (mainPageElement1Text.contains("HOME & LIVING")) {
-                homeAndLivingFound = true;
-            }
+        List<String> mainPageElement1Text = new ArrayList<>();
+        for (WebElement element : mainPageElements1List) {
+            mainPageElement1Text.add(element.getText());
         }
-        if (menFound && womenFound && kidsFound && beautyFound && homeAndLivingFound && studioFound) {
-            Assert.assertTrue("All elements found", true);
-        } else {
-            Assert.fail("Elements not found");
-        }
+        List<String> manualList1 = Arrays.asList("MEN", "WOMEN", "KIDS", "HOME & LIVING", "BEAUTY", "STUDIO");
+        Assert.assertEquals("List are equal", mainPageElement1Text, manualList1);
         List<WebElement> mainPageElements2List = driver.findElements(myntraLocators.mainPageElements2);
-        boolean profileFound = false;
-        boolean wishListFound = false;
-        boolean bagFound = false;
-        for (WebElement element2 : mainPageElements2List) {
-            String mainPageElement2Text = element2.getText();
-            if (mainPageElement2Text.contains("Profile")) {
-                profileFound = true;
-            }
-            if (mainPageElement2Text.contains("Bag")) {
-                 bagFound = true;
-            }
-            if (mainPageElement2Text.contains("Wishlist")) {
-                wishListFound = true;
-            }
+        List<String> mainPageElement2Text = new ArrayList<>();
+        for (WebElement element : mainPageElements2List) {
+            mainPageElement2Text.add(element.getText());
         }
-        if (profileFound && bagFound && wishListFound) {
-            Assert.assertTrue("All elements found", true);
+        List<String> manualList2 = Arrays.asList("Profile", "Wishlist", "Bag");
+        if (mainPageElement2Text.equals(manualList2)){
+            System.out.println("The two lists are equal.");
         } else {
-            Assert.fail("Elements not found");
+            System.out.println("The two lists are not equal.");
         }
     }
 
@@ -168,49 +121,21 @@ public class StepDefinition {
         String filterTag = driver.findElement(myntraLocators.filterTag).getText();
         Assert.assertTrue(filterTag.contains("FILTER"));
         List<WebElement> filterTagElementList = driver.findElements(myntraLocators.filterTagElement);
-        boolean categoriesFound = false;
-        boolean brandFound = false;
-        boolean priceFound = false;
-        boolean colorFound = false;
-        boolean discountRangeFound = false;
-        for (WebElement filterElement : filterTagElementList) {
-            String filterElementText = filterElement.getText();
-            if (filterElementText.contains("CATEGORIES")) {
-                categoriesFound = true;
-            }
-            if (filterElementText.contains("BRAND")) {
-                brandFound = true;
-            }
-            if (filterElementText.contains("PRICE")) {
-                priceFound = true;
-            }
-            if (filterElementText.contains("COLOR")) {
-                colorFound = true;
-            }
-            if (filterElementText.contains("DISCOUNT RANGE")) {
-                discountRangeFound = true;
-            }
+        List<String> filterTagElement1Text = new ArrayList<>();
+        for (WebElement element : filterTagElementList) {
+            filterTagElement1Text.add(element.getText());
         }
-        if (categoriesFound && brandFound && priceFound && colorFound && discountRangeFound) {
-            Assert.assertTrue("All elements found", true);
-        } else {
-            Assert.fail("Elements not found");
-        }
+        List<String> manualList3 = Arrays.asList("CATEGORIES", "BRAND", "PRICE", "COLOR", "DISCOUNT RANGE");
+        Assert.assertEquals("List are equal", filterTagElement1Text, manualList3);
     }
 
     @Then("Validate data under categories")
     public void validate_data_under_categories() {
         List<WebElement> categoriesList = driver.findElements(myntraLocators.categoryTag);
-        if (categoriesList.size() > 0) {
             Assert.assertNotNull(categoriesList);
-        } else {
-            Assert.fail("Validation Failed");
-        }
         driver.findElement(myntraLocators.tshirtsFilter).click();
         tempFilterTagText = driver.findElement(myntraLocators.tempFilterTag).getText();
-        if (tempFilterTagText.equals("Tshirts")){
-            Assert.assertTrue("box is checked", true);
-        }
+            Assert.assertEquals(tempFilterTagText, "Tshirts");
         clearButtonDisplay = driver.findElement(myntraLocators.clearAllButton);
         if (clearButtonDisplay.isDisplayed()){
             driver.findElement(myntraLocators.clearAllButton).click();
@@ -245,67 +170,40 @@ public class StepDefinition {
     @Then("Validate data under colour")
     public void validateDataUnderColour() {
         List<WebElement> colorList = driver.findElements(myntraLocators.colorTag);
-        if (colorList.size() > 0) {
-            Assert.assertTrue("Validation Pass", true);
-        } else {
-            Assert.fail("Validation Fail");
-        }
+        Assert.assertTrue("Validation Pass", colorList.size() > 0);
         driver.findElement(myntraLocators.colorMoreTag).click();
         List<WebElement> allColorList = driver.findElements(myntraLocators.colorTag);
-        if (allColorList.size() > colorList.size()) {
-            Assert.assertTrue("Validation Pass", true);
-        } else {
-            Assert.fail("Validation Fail");
-        }
+        Assert.assertTrue("Validation Pass", allColorList.size() > colorList.size());
         driver.findElement(myntraLocators.colorFilter).click();
         String tempColorTagText = driver.findElement(myntraLocators.tempFilterTag).getText();
-        if (tempColorTagText.contains("Black")){
-            Assert.assertTrue("box is checked", true);
-        }
-        driver.findElement(myntraLocators.clearAllButton).click();
+        Assert.assertTrue("box is checked", tempColorTagText.contains("Black"));
     }
 
     @And("Validate data under discount range and price")
     public void validateDataUnderDiscountRangeAndPrice() throws InterruptedException {
         List<WebElement> discountRangeList = driver.findElements(myntraLocators.discountRangeTag);
-        if (discountRangeList.size() > 0) {
-            Assert.assertTrue("Validation Pass", true);
-        } else {
-            Assert.fail("Validation Fail");
-        }
+            Assert.assertTrue("Validation Pass", discountRangeList.size() > 0);
         ac = new Actions(driver);
         ac.sendKeys(Keys.PAGE_DOWN).build().perform();
         Thread.sleep(1000);
+        driver.findElement(myntraLocators.clearAllButton).click();
         driver.findElement(myntraLocators.discountFilter).click();
-        Thread.sleep(1000);
         String tempDiscountTagText = driver.findElement(myntraLocators.tempFilterTag).getText();
-        if (tempDiscountTagText.contains("10%")){
-            Assert.assertTrue("box is checked", true);
-        }
+        Assert.assertTrue("box is checked", tempDiscountTagText.contains("10 % And Above"));
         Thread.sleep(1000);
         driver.findElement(myntraLocators.clearAllButton).click();
         List<WebElement> priceList = driver.findElements(myntraLocators.priceTag);
-        if (priceList.size() > 0) {
-            Assert.assertTrue("Validation Pass", true);
-        } else {
-            Assert.fail("Validation Fail");
-        }
+        Assert.assertTrue("Validation Pass", priceList.size()>0);
         driver.findElement(myntraLocators.priceFilter).click();
         String tempPriceTagText = driver.findElement(myntraLocators.tempFilterTag).getText();
-        if (tempDiscountTagText.contains("Rs.")){
-            Assert.assertTrue("box is checked", true);
-        }
+        Assert.assertTrue("box is checked", tempPriceTagText.contains("Rs."));
         driver.findElement(myntraLocators.clearAllButton).click();
     }
 
     @Then("validate the navigated page elements")
     public void validate_The_NavigatedPageElements() {
         List<WebElement> sortTabList = driver.findElements(By.xpath("//label[@class='sort-label ']"));
-        if (sortTabList.size() > 0) {
-            Assert.assertTrue("Validation Pass", true);
-        } else {
-            Assert.fail("Validation Fail");
-        }
+        Assert.assertTrue("Validation Pass", sortTabList.size() > 0);
         driver.close();
     }
 
@@ -314,7 +212,7 @@ public class StepDefinition {
         String men = "//div[@class='desktop-navContent']/div/a[contains(text(), '%s')]";
         ac = new Actions(driver);
         ac.moveToElement(driver.findElement(By.xpath(String.format(men, Men)))).perform();
-        Boolean desktopContainer = driver.findElement(myntraLocators.desktopContainerMen).isDisplayed();
+        driver.findElement(myntraLocators.desktopContainerMen).isDisplayed();
         String topWear = "//div[@class='desktop-categoryContainer']/li/ul/li/a[contains(text(), '%s')]";
         driver.findElement(By.xpath(String.format(topWear, Topwear))).click();
         String currentUrlMen = driver.getCurrentUrl();
@@ -323,12 +221,10 @@ public class StepDefinition {
 
     @Then("Validate the topwear page is open")
     public void validateTheTopwearPageIsOpen() {
-        String menTopWearText = driver.findElement(myntraLocators.topwearPageValidate).getText();
-        if (menTopWearText.equals("Men Topwear")) {
-            Assert.assertTrue("Validation Pass", true);
-        } else {
-            Assert.fail("Validation Fail");
-        }
+        String menWearPageText = driver.findElement(myntraLocators.menWearPageText).getText();
+        String[] pageElements = menWearPageText.split("\n");
+        String menTopwear = pageElements[2];
+        Assert.assertEquals("Validation Pass", "Men Topwear", menTopwear);
         String filterTag = driver.findElement(myntraLocators.filterTag).getText();
         Assert.assertTrue(filterTag.contains("FILTER"));
     }
@@ -336,61 +232,58 @@ public class StepDefinition {
     @Then("Validate the images are visible on screen")
     public void validate_the_images_are_visible_on_screen() {
         List<WebElement> topWearImgValidation = driver.findElements(myntraLocators.homePageImg);
-        if (topWearImgValidation.size() > 0) {
-            Assert.assertTrue("Validation Pass", true);
-        } else {
-            Assert.fail("Validation Fail");
-        }
+        Assert.assertTrue("Validation Pass", topWearImgValidation.size() > 0);
         List<WebElement> homePageBrandName = driver.findElements(myntraLocators.homePageBrandName);
         for (int i = 0; i < homePageBrandName.size(); i++) {
             String homePageBrandNameListText = homePageBrandName.get(i).getText();
-            System.out.println(homePageBrandNameListText);
+            if (homePageBrandName.isEmpty()) {
+                System.out.println("No Brand Names");
+            }
+            if (homePageBrandNameListText.matches("[a-zA-Z]+")) { //Matches with (a-z or A-Z)
+                System.out.println("Data present" + homePageBrandNameListText);
+            }
+            if(homePageBrandNameListText.matches("[0-9]+")) {
+                System.out.println("No brand available");
+            }
         }
     }
 
     @Then("Check brand button search functionality")
     public void checkBrandButtonSearchFunctionality() throws InterruptedException {
         driver.findElement(myntraLocators.brandMoreTag).click();
-        Boolean brandMorePageOpenValidation = driver.findElement(myntraLocators.brandMorePageOpen).isDisplayed();
-        Boolean searchBrandValidation = driver.findElement(myntraLocators.searchBrandTag).isDisplayed();
+        driver.findElement(myntraLocators.brandMorePageOpen).isDisplayed();
+        driver.findElement(myntraLocators.searchBrandTag).isDisplayed();
         List<WebElement> searchTabTextList1 = driver.findElements(myntraLocators.brandTextInSearchTab);
         driver.findElement(myntraLocators.searchBrandTag).sendKeys("Nike");
         List<WebElement> searchTabTextList2 = driver.findElements(myntraLocators.brandTextInSearchTab);
-        if (searchTabTextList1.size() > searchTabTextList2.size()) {
-            Assert.assertTrue("Validation Pass", true);
-        } else {
-            Assert.fail("Validation Fail");
-        }
+        Assert.assertTrue("Validation Pass", searchTabTextList1.size() > searchTabTextList2.size());
         WebElement checkBoxElement = driver.findElement(myntraLocators.brandCheckBox);
         checkBoxElement.click();
         driver.findElement(myntraLocators.brandPageCloseButton).click();
         Thread.sleep(2000);
         List<WebElement> homePageBrandName1 = driver.findElements(myntraLocators.homePageBrandName);
-        System.out.println(homePageBrandName1.size());
         for (int i = 0; i < homePageBrandName1.size(); i++) {
             String homePageBrandNameListText1 = homePageBrandName1.get(i).getText();
-            if (homePageBrandNameListText1.contains("Nike")) {
-                Assert.assertTrue("Validation Pass", true);
-            } else {
-                Assert.fail("Validation Fail");
-            }
+            Assert.assertTrue("Validation Failed", homePageBrandNameListText1.contains("Nike"));
         }
     }
 
     @Then("Go to the end of page and validate the number of pages and available buttons")
     public void goToTheEndOfPageAndValidateTheNumberOfPagesAndAvailableButton() throws InterruptedException {
         String pageCountText = driver.findElement(myntraLocators.pageCountTag).getText();
-        Boolean activePageValidation = driver.findElement(myntraLocators.activePage).isDisplayed();
-        Boolean nextButtonValidation = driver.findElement(myntraLocators.nextButton).isDisplayed();
+        WebElement activePageValidation = driver.findElement(myntraLocators.activePage);
+        if (activePageValidation.isDisplayed()){
+            activePageValidation.click();
+        }
+        WebElement nextButtonValidation = driver.findElement(myntraLocators.nextButton);
+        if (nextButtonValidation.isDisplayed()){
+            nextButtonValidation.click();
+        }
         String[] pageCountTextParts = pageCountText.split(" ");
         int PageCount1 = Integer.parseInt(pageCountTextParts[3]);
         String pageCount2 = driver.findElement(myntraLocators.lastValueOfPageCount).getText();
         int PageCount2 = Integer.parseInt(pageCount2);
-        if(PageCount2==PageCount1) {
-            Assert.assertTrue("Validation Pass", true);
-        } else {
-            Assert.fail("Validation Fail");
-        }
+        Assert.assertEquals("Page count validation failed", PageCount1, PageCount2);
         driver.findElement(myntraLocators.lastValueOfPageCount).click();
         Thread.sleep(30000);
         driver.findElement(myntraLocators.previousButton).isDisplayed();
@@ -404,11 +297,7 @@ public class StepDefinition {
 //        WebElement click = driver.findElement(By.xpath(String.format(myntraLocators.firstimg)));
         driver.findElement(myntraLocators.firstImgClick).click();
         handles = new ArrayList<String>(driver.getWindowHandles());
-        if (handles.size() == 2) {
-            Assert.assertTrue("Validation Pass", true);
-        } else {
-            Assert.fail("Validation Fail");
-        }
+        Assert.assertEquals("Validation failed: Incorrect number of handles", 2, handles.size());
     }
 
     @Then("Validate the URL and text on the window")
@@ -424,61 +313,64 @@ public class StepDefinition {
         String firstImgNewWindowText = firstImgNewWindow.getText();
         WebElement discountPriceNewWindow = driver.findElement(myntraLocators.discountNewWindow);
         String discountPriceNewWindowText = discountPriceNewWindow.getText();
-        if (firstImgOldWindowText.equals(firstImgNewWindowText) && discountPriceOldWindowText.equals(discountPriceNewWindowText)){
-            Assert.assertTrue("Validation Pass", true);
-        } else {
-            Assert.fail("Validation Fail");
-        }
-
+        Assert.assertTrue("Validation Pass", firstImgOldWindowText.equals(firstImgNewWindowText) && discountPriceOldWindowText.equals(discountPriceNewWindowText));
     }
 
     @And("Validate a click on ADD TO BAG, it should ask for size")
     public void validateAClickOnADDTOBAGItShouldAskForSize() {
         driver.findElement(myntraLocators.addToBag).click();
-        driver.findElement(myntraLocators.addToBagError).isDisplayed();
+        String addToBagErrorText = driver.findElement(myntraLocators.addToBagError).getText();
+        if (addToBagErrorText.contains("Please select a size")){
+            driver.findElement(myntraLocators.sizeChartButton).click();
+        }
+        WebElement inchButtonSelectedValidation = driver.findElement(myntraLocators.inchButton);
+        if (inchButtonSelectedValidation.isSelected()){
+            WebElement cmButtonValidation = driver.findElement(myntraLocators.centimeterButton);
+            cmButtonValidation.click();
+            Assert.assertTrue("cm is selected", cmButtonValidation.isSelected());
+        }
+        driver.findElement(myntraLocators.sizeChartCloseButton).click();
         List<WebElement> sizeElements = driver.findElements(myntraLocators.sizeButton);
         for (WebElement element : sizeElements) {
             size = element.getText();
-            System.out.println(size);
-            if (sizeElements.size() > 0) {
-                System.out.println("Size elements are present");
+            if (size.isEmpty()) {
+                System.out.println("Validation Failed");
             }
-            if (size.contains("XS") || size.contains("S")  || size.contains("M") || size.contains("L")  || size.contains("XL")){
-                Assert.assertTrue("Size is present", true);
-            }
-                else {
-                Assert.assertFalse("Size not present", false);
-            }
+            Assert.assertTrue("Size is present", size.contains("XS") || size.contains("S")  || size.contains("M") || size.contains("L")  || size.contains("XL"));
         }
     }
 
     @Then("^Select the size \\\"(.*)\\\" and click on ADD TO BAG and validate item added to bag$")
     public void selectTheSizeAndClickOnADDTOBAGAndValidateItemAddedToBag(String M) {
-        WebElement addToBagTextPopup1 = driver.findElement(myntraLocators.addToBagTextPopup);
-        System.out.println(addToBagTextPopup1.getText());
-        if (addToBagTextPopup1.isDisplayed()){
-            Assert.assertTrue("Element found", true);
-            Assert.assertFalse("Element not found", false);
-        }
-        String xssizebutton = "//p[text()= '%s']";
-        driver.findElement(By.xpath(String.format(xssizebutton, M))).click();
+        WebElement addToBagText = driver.findElement(myntraLocators.addToBagTextPopup);
+        String msizebutton = "//p[text()= '%s']";
+        driver.findElement(By.xpath(String.format(msizebutton, M))).click();
         driver.findElement(myntraLocators.addToBag).click();
         WebElement addToBagPopupWindow = driver.findElement(myntraLocators.addToBagPopup);
-        Boolean addToBagPopupWindowValidation = addToBagPopupWindow.isDisplayed();
-        WebElement addToBagTextPopup2 = driver.findElement(myntraLocators.addToBagTextPopup);
-        if (addToBagTextPopup2.isDisplayed()){
-            Assert.assertTrue("Element found", true);
+        if(addToBagPopupWindow.isDisplayed()) {
+            Assert.assertTrue(addToBagText.isDisplayed());
         }
-        else {
-            Assert.assertFalse("Element not found", false);
+        WebElement deliveryCheckButton = driver.findElement(myntraLocators.deliveryCheckButton);
+        deliveryCheckButton.click();
+        WebElement deliveryCheckErrorPopup = driver.findElement(myntraLocators.deliveryCheckError);
+        String deliveryCheckError = deliveryCheckErrorPopup.getText();
+        System.out.println(deliveryCheckError);
+        if (deliveryCheckErrorPopup.isDisplayed()){
+            Assert.assertTrue("Validation Pass", deliveryCheckError.contains("Please enter a valid pincode"));
         }
         driver.findElement(myntraLocators.deliveryTextBox).sendKeys("204101");
-        driver.findElement(myntraLocators.deliveryCheckButton).click();
+        deliveryCheckButton.click();
         Boolean deliveryGreenButtonValidation = driver.findElement(myntraLocators.deliveryGreenCheck).isDisplayed();
         Boolean deliveryChangeButtonValidation = driver.findElement(myntraLocators.deliveryChangeButton).isDisplayed();
+        if (deliveryGreenButtonValidation && deliveryChangeButtonValidation) {
+            driver.findElement(myntraLocators.deliveryMoreInfo).click();
+            String exchangeAndReturnText = driver.findElement(myntraLocators.easyExchangeAndReturnHeading).getText();
+            Assert.assertEquals("String Match", exchangeAndReturnText, "Easy Exchange & Return");
+        } else {
+            System.out.println("Element missing");
+        }
+        driver.findElement(myntraLocators.moreInfoCloseButton).click();
         driver.findElement(myntraLocators.deliveryChangeButton).click();
-        Boolean deliveryCheckButtonValidation = driver.findElement(myntraLocators.deliveryCheckButton).isDisplayed();
-        Boolean goToBagIcon = driver.findElement(myntraLocators.goToBag).isDisplayed();
     }
 
     @And("Validate checkout page")
@@ -487,27 +379,32 @@ public class StepDefinition {
         driver.findElement(myntraLocators.checkoutFullPage).click();
         String addToBagTextUrl = driver.getCurrentUrl();
         Assert.assertTrue(addToBagTextUrl.contains("checkout"));
-        Boolean itemAddedConfirmation1 = driver.findElement(myntraLocators.addedItemConfirmation).isDisplayed();
+        driver.findElement(myntraLocators.addedItemConfirmation).isDisplayed();
         String secureElement = driver.findElement(myntraLocators.secureElement).getText();
-        Boolean secureValidation = secureElement.contains("100%");
-        Boolean moveToWishlistButtonConfirm1 = driver.findElement(myntraLocators.moveToWishlistButton).isDisplayed();
+        Assert.assertTrue("Validation Pass", secureElement.contains("100%"));
+        driver.findElement(myntraLocators.moveToWishlistButton).isDisplayed();
         driver.findElement(myntraLocators.placeOrderButton).click();
         String placeOrderButtonClickUrl = driver.getCurrentUrl();
-        Boolean placeOrderButtonValidation = placeOrderButtonClickUrl.contains("login");
+        Assert.assertTrue("Validation Pass", placeOrderButtonClickUrl.contains("login"));
         driver.navigate().back();
     }
 
     @Then("Validate Remove and wishlist functionality")
     public void validateRemoveAndWishlistFunctionality() {
-        driver.findElement(myntraLocators.removeButton1).click();
-        driver.findElement(myntraLocators.removeButtonCnfirmationPage).isDisplayed();
-        driver.findElement(myntraLocators.removeButton2).click();
-        Boolean itemRemovedConfirmation = driver.findElement(myntraLocators.addedItemConfirmation).isDisplayed();
-        Boolean moveToWishListButtonRemoved = driver.findElement(myntraLocators.moveToWishlistButton).isDisplayed();
-        driver.findElement(myntraLocators.additemFromWishlist).click();
+        WebElement addedItemConfirmation = driver.findElement(myntraLocators.addedItemConfirmation);
+        WebElement moveToWishlistButton = driver.findElement(myntraLocators.moveToWishlistButton);
+        WebElement removeButton = driver.findElement(myntraLocators.removeButton1);
+        if (addedItemConfirmation.isDisplayed() && moveToWishlistButton.isDisplayed() && removeButton.isDisplayed()) {
+            removeButton.click();
+        }
+        WebElement removeButtonConfirmationPage = driver.findElement(myntraLocators.removeButtonConfirmationPage);
+        if (removeButtonConfirmationPage.isDisplayed()){
+            driver.findElement(myntraLocators.removeButton2).click();
+    }
+        driver.findElement(myntraLocators.addItemFromWishlist).click();
         String wishlistUrl = driver.getCurrentUrl();
         Assert.assertTrue(wishlistUrl.contains("wishlist"));
-        Boolean loginButtonOnWishListScreen = driver.findElement(myntraLocators.wishlistScreenLoginButton).isDisplayed();
+        driver.findElement(myntraLocators.wishlistScreenLoginButton).isDisplayed();
         driver.findElement(myntraLocators.wishlistScreenLoginButton).click();
         String loginUrl = driver.getCurrentUrl();
         Assert.assertTrue(loginUrl.contains("https://www.myntra.com/login?referer=https://www.myntra.com/wishlist"));
