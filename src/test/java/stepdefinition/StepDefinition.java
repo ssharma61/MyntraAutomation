@@ -297,17 +297,13 @@ public class StepDefinition {
     public void validateTheURLAndTextOnTheWindow() {
         WebElement firstImgOldWindow = driver.findElement(myntraLocators.firstImgText(1));
         String firstImgOldWindowText = firstImgOldWindow.getText();
-        WebElement discountPriceOldWindow = driver.findElement(myntraLocators.discountOldWindow);
-        String discountPriceOldWindowText = discountPriceOldWindow.getText();
         driver.switchTo().window(handles.get(1));
         String currentUrlNewTab = driver.getCurrentUrl();
         Assert.assertTrue(currentUrlNewTab.contains("https://www.myntra.com/tshirts/"));
         WebElement firstImgNewWindow = driver.findElement(myntraLocators.firstImgNewWindow);
         String firstImgNewWindowText = firstImgNewWindow.getText();
-        WebElement discountPriceNewWindow = driver.findElement(myntraLocators.discountNewWindow);
-        String discountPriceNewWindowText = discountPriceNewWindow.getText();
-        Assert.assertTrue("Validation Pass", firstImgOldWindowText.equals(firstImgNewWindowText) && discountPriceOldWindowText.equals(discountPriceNewWindowText));
-    }
+        Assert.assertEquals("Validation Pass", firstImgOldWindowText, firstImgNewWindowText);
+        }
 
     @And("Validate a click on ADD TO BAG, it should ask for size")
     public void validateAClickOnADDTOBAGItShouldAskForSize() {

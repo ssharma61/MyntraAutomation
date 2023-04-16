@@ -56,12 +56,8 @@ public class myntraLocators {
     }
 
     public static By firstImgNewWindow = By.xpath("//h1[@class='pdp-title']");
-    public static By discountOldWindow = By.xpath("(//span[@class='product-discountPercentage'])[1]");
-    public static By discountNewWindow = By.xpath("//span[@class='pdp-discount']");
-    public static By headingOfNewWindow = By.xpath("//div[@class='breadcrumbs-container']");
     public static By addToBag = By.xpath("//span[@class='myntraweb-sprite pdp-whiteBag sprites-whiteBag pdp-flex pdp-center']");
     public static By sizeChartButton = By.xpath("//button[@class='size-buttons-show-size-chart']");
-    public static By sizeChart = By.xpath("//button//div[@class='sizeChartWeb-info']");
     public static By addToBagError = By.xpath("//span[@class='size-buttons-size-error-message']");
     public static By sizeButton = By.xpath("//button[@class='size-buttons-size-button size-buttons-size-button-default']");
     public static By inchButton = By.xpath("//button[@id='Inches']");
