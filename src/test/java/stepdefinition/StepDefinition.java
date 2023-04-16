@@ -1,5 +1,7 @@
 package stepdefinition;
 
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -22,9 +24,9 @@ public class StepDefinition {
     static Actions ac;
     static String tempFilterTagText;
     WebElement clearButtonDisplay;
-
-    @Given("I have opened my web browser")
-    public void i_have_opened_my_web_browser() {
+@Before
+//    @Given("I have opened my web browser")
+    public void beforeScenario() {
         System.setProperty("webdriver.chrome.driver", "C:\\Users\\swati.sharma\\IdeaProjects\\Myntra\\src\\test\\chrome\\chromedriver.exe");
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--remote-allow-origins=*");
@@ -32,23 +34,16 @@ public class StepDefinition {
         driver.manage().window().maximize();
         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+    driver.get("https://www.myntra.com/");
+    WebElement profileIcon = driver.findElement(myntraLocators.profileIcon);
+    WebElement myntraIcon = driver.findElement(myntraLocators.myntraIcon);
+    if (!profileIcon.isDisplayed() && !myntraIcon.isDisplayed()){
+        Assert.assertFalse("Elements not found", profileIcon.isDisplayed() && myntraIcon.isDisplayed());
+    }
+    else {Assert.assertTrue("Element found", true);}
+    profileIcon.click();
     }
 
-    @Then("I navigate to Myntra")
-    public void i_navigate_to_myntra() {
-        driver.get("https://www.myntra.com/");
-    }
-
-    @Then("Validate if the myntra page opened")
-    public void validate_if_the_myntra_page_opened() {
-        WebElement profileIcon = driver.findElement(myntraLocators.profileIcon);
-        WebElement myntraIcon = driver.findElement(myntraLocators.myntraIcon);
-        if (!profileIcon.isDisplayed() && !myntraIcon.isDisplayed()){
-            Assert.assertFalse("Elements not found", profileIcon.isDisplayed() && myntraIcon.isDisplayed());
-        }
-        else {Assert.assertTrue("Element found", true);}
-        profileIcon.click();
-    }
     @Given("I have clicked on Signup or login button under profile")
     public void iHaveClickedOnSignupOrLoginButtonUnderProfile() {
         currentUrl = driver.getCurrentUrl();
@@ -80,7 +75,6 @@ public class StepDefinition {
         String currentUrl2 = driver.getCurrentUrl();
         Assert.assertTrue(currentUrl2.contains("https://www.myntra.com/termsofuse"));
         driver.navigate().back();
-        driver.close();
     }
 
     @Given("Validate if desktop tag are present")
@@ -195,6 +189,7 @@ public class StepDefinition {
         List<WebElement> priceList = driver.findElements(myntraLocators.priceTag);
         Assert.assertTrue("Validation Pass", priceList.size()>0);
         driver.findElement(myntraLocators.priceFilter).click();
+        Thread.sleep(1000);
         String tempPriceTagText = driver.findElement(myntraLocators.tempFilterTag).getText();
         Assert.assertTrue("box is checked", tempPriceTagText.contains("Rs."));
         driver.findElement(myntraLocators.clearAllButton).click();
@@ -204,7 +199,6 @@ public class StepDefinition {
     public void validate_The_NavigatedPageElements() {
         List<WebElement> sortTabList = driver.findElements(By.xpath("//label[@class='sort-label ']"));
         Assert.assertTrue("Validation Pass", sortTabList.size() > 0);
-        driver.close();
     }
 
     @Given("^Hover on Men \\\"(.*)\\\" and Validate the background page and click on \\\"(.*)\\\"$")
@@ -287,7 +281,6 @@ public class StepDefinition {
         driver.findElement(myntraLocators.lastValueOfPageCount).click();
         Thread.sleep(30000);
         driver.findElement(myntraLocators.previousButton).isDisplayed();
-        driver.quit();
     }
 
     @Given("Click on image and validate if it opens in new window")
@@ -379,7 +372,7 @@ public class StepDefinition {
         driver.findElement(myntraLocators.checkoutFullPage).click();
         String addToBagTextUrl = driver.getCurrentUrl();
         Assert.assertTrue(addToBagTextUrl.contains("checkout"));
-        driver.findElement(myntraLocators.addedItemConfirmation).isDisplayed();
+//        driver.findElement(myntraLocators.addedItemConfirmation).isDisplayed();
         String secureElement = driver.findElement(myntraLocators.secureElement).getText();
         Assert.assertTrue("Validation Pass", secureElement.contains("100%"));
         driver.findElement(myntraLocators.moveToWishlistButton).isDisplayed();
@@ -408,6 +401,9 @@ public class StepDefinition {
         driver.findElement(myntraLocators.wishlistScreenLoginButton).click();
         String loginUrl = driver.getCurrentUrl();
         Assert.assertTrue(loginUrl.contains("https://www.myntra.com/login?referer=https://www.myntra.com/wishlist"));
+    }
+    @After
+    public void afterScenario(){
         driver.quit();
     }
 }

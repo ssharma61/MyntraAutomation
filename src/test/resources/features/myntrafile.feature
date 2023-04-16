@@ -1,10 +1,10 @@
 @Myntra1
 Feature: Testing myntra website
 
-  Background: Launching Myntra website
-    Given I have opened my web browser
-    Then I navigate to Myntra
-    Then Validate if the myntra page opened
+#  Background: Launching Myntra website
+#    Given I have opened my web browser
+#    Then I navigate to Myntra
+#    Then Validate if the myntra page opened
 
   Scenario: Check Singup or Login button functionality
     Given I have clicked on Signup or login button under profile
