@@ -360,6 +360,8 @@ public class StepDefinition {
         }
         driver.findElement(myntraLocators.moreInfoCloseButton).click();
         driver.findElement(myntraLocators.deliveryChangeButton).click();
+        WebElement goToBagButton = driver.findElement(myntraLocators.goToBag);
+        Assert.assertTrue(goToBagButton.isDisplayed());
     }
 
     @And("Validate checkout page")
@@ -368,10 +370,10 @@ public class StepDefinition {
         driver.findElement(myntraLocators.checkoutFullPage).click();
         String addToBagTextUrl = driver.getCurrentUrl();
         Assert.assertTrue(addToBagTextUrl.contains("checkout"));
-//        driver.findElement(myntraLocators.addedItemConfirmation).isDisplayed();
         String secureElement = driver.findElement(myntraLocators.secureElement).getText();
         Assert.assertTrue("Validation Pass", secureElement.contains("100%"));
-        driver.findElement(myntraLocators.moveToWishlistButton).isDisplayed();
+        WebElement moveToWishlistButton1 = driver.findElement(myntraLocators.moveToWishlistButton);
+        Assert.assertTrue(moveToWishlistButton1.isDisplayed());
         driver.findElement(myntraLocators.placeOrderButton).click();
         String placeOrderButtonClickUrl = driver.getCurrentUrl();
         Assert.assertTrue("Validation Pass", placeOrderButtonClickUrl.contains("login"));
@@ -393,7 +395,8 @@ public class StepDefinition {
         driver.findElement(myntraLocators.addItemFromWishlist).click();
         String wishlistUrl = driver.getCurrentUrl();
         Assert.assertTrue(wishlistUrl.contains("wishlist"));
-        driver.findElement(myntraLocators.wishlistScreenLoginButton).isDisplayed();
+        WebElement wishlistScreenLoginButton = driver.findElement(myntraLocators.wishlistScreenLoginButton);
+        Assert.assertTrue(wishlistScreenLoginButton.isDisplayed());
         driver.findElement(myntraLocators.wishlistScreenLoginButton).click();
         String loginUrl = driver.getCurrentUrl();
         Assert.assertTrue(loginUrl.contains("https://www.myntra.com/login?referer=https://www.myntra.com/wishlist"));
