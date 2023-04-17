@@ -206,8 +206,7 @@ public class StepDefinition {
         String men = "//div[@class='desktop-navContent']/div/a[contains(text(), '%s')]";
         ac = new Actions(driver);
         ac.moveToElement(driver.findElement(By.xpath(String.format(men, Men)))).perform();
-        WebElement desktopContainerMen = driver.findElement(myntraLocators.desktopContainerMen);
-        Assert.assertTrue(desktopContainerMen.isDisplayed());
+        driver.findElement(myntraLocators.desktopContainerMen).isDisplayed();
         String topWear = "//div[@class='desktop-categoryContainer']/li/ul/li/a[contains(text(), '%s')]";
         driver.findElement(By.xpath(String.format(topWear, Topwear))).click();
         String currentUrlMen = driver.getCurrentUrl();

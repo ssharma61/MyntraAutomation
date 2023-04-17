@@ -30,6 +30,7 @@ Feature: Testing myntra website
     Then Check brand button search functionality
     Then Go to the end of page and validate the number of pages and available buttons
 
+
   Scenario: Test Add to Bag functionality
     Given Click on image and validate if it opens in new window
     Then Validate the URL and text on the window
