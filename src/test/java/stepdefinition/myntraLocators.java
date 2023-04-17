@@ -47,7 +47,7 @@ public class myntraLocators {
     public static By pageCountTag = By.xpath("//li[@class='pagination-paginationMeta']");
     public static By lastValueOfPageCount = By.xpath("//ul[@class='pagination-container']//li[@class='pagination-number'][last()]");
     public static By activePage = By.xpath("//li[@class='pagination-active']");
-    public static By nextButton = By.xpath("//li[@class='pagination-next']");
+    public static By nextButton = By.xpath("//li//a[@rel='next']");
     public static By previousButton = By.xpath("//li[@class='pagination-prev']");
     //    static String firstimg = homepageimg + "[1]";
     public static By firstImgClick = By.xpath("//li[@class='product-base'][1]");

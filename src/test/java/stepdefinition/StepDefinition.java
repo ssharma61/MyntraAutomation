@@ -206,7 +206,8 @@ public class StepDefinition {
         String men = "//div[@class='desktop-navContent']/div/a[contains(text(), '%s')]";
         ac = new Actions(driver);
         ac.moveToElement(driver.findElement(By.xpath(String.format(men, Men)))).perform();
-        driver.findElement(myntraLocators.desktopContainerMen).isDisplayed();
+        WebElement desktopContainerMen = driver.findElement(myntraLocators.desktopContainerMen);
+        Assert.assertTrue(desktopContainerMen.isDisplayed());
         String topWear = "//div[@class='desktop-categoryContainer']/li/ul/li/a[contains(text(), '%s')]";
         driver.findElement(By.xpath(String.format(topWear, Topwear))).click();
         String currentUrlMen = driver.getCurrentUrl();
@@ -245,8 +246,9 @@ public class StepDefinition {
     @Then("Check brand button search functionality")
     public void checkBrandButtonSearchFunctionality() throws InterruptedException {
         driver.findElement(myntraLocators.brandMoreTag).click();
-        driver.findElement(myntraLocators.brandMorePageOpen).isDisplayed();
-        driver.findElement(myntraLocators.searchBrandTag).isDisplayed();
+        WebElement brandMorePageOpen = driver.findElement(myntraLocators.brandMorePageOpen);
+        WebElement searchBrandTag = driver.findElement(myntraLocators.searchBrandTag);
+        Assert.assertTrue(brandMorePageOpen.isDisplayed() && searchBrandTag.isDisplayed());
         List<WebElement> searchTabTextList1 = driver.findElements(myntraLocators.brandTextInSearchTab);
         driver.findElement(myntraLocators.searchBrandTag).sendKeys("Nike");
         List<WebElement> searchTabTextList2 = driver.findElements(myntraLocators.brandTextInSearchTab);
@@ -273,6 +275,9 @@ public class StepDefinition {
         if (nextButtonValidation.isDisplayed()){
             nextButtonValidation.click();
         }
+        WebElement previousButtonValidation = driver.findElement(myntraLocators.previousButton);
+        Assert.assertTrue(previousButtonValidation.isDisplayed());
+        previousButtonValidation.click();
         String[] pageCountTextParts = pageCountText.split(" ");
         int PageCount1 = Integer.parseInt(pageCountTextParts[3]);
         String pageCount2 = driver.findElement(myntraLocators.lastValueOfPageCount).getText();
@@ -280,8 +285,9 @@ public class StepDefinition {
         Assert.assertEquals("Page count validation failed", PageCount1, PageCount2);
         driver.findElement(myntraLocators.lastValueOfPageCount).click();
         Thread.sleep(30000);
-        driver.findElement(myntraLocators.previousButton).isDisplayed();
+
     }
+
 
     @Given("Click on image and validate if it opens in new window")
     public void clickOnImageAndValidateIfItOpensInNewWindow() throws InterruptedException {
@@ -405,4 +411,5 @@ public class StepDefinition {
     public void afterScenario(){
         driver.quit();
     }
+
 }
