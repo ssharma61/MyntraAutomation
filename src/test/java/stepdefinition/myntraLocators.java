@@ -54,7 +54,6 @@ public class myntraLocators {
     public static By firstImgText(int i) {
         return By.xpath("(//h3[@class='product-brand'])" + "[" + i + "]");
     }
-
     public static By firstImgNewWindow = By.xpath("//h1[@class='pdp-title']");
     public static By addToBag = By.xpath("//span[@class='myntraweb-sprite pdp-whiteBag sprites-whiteBag pdp-flex pdp-center']");
     public static By sizeChartButton = By.xpath("//button[@class='size-buttons-show-size-chart']");
